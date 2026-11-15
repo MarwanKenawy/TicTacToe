@@ -14,6 +14,10 @@ public class Board {
         return board[row][col];
     }
 
+    public void simulateMove(int row, int col, CellState state){
+        board[row][col] = state;
+    }
+
     public void setCell(int row, int col, CellState state){
         board[row][col] = state;
         notifyObservers();
