@@ -1,5 +1,9 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
     private final CellState[][] board;
+    private final List<BoardObserver> observers = new ArrayList<>();
 
     public Board(){
         board = new CellState[3][3];
@@ -12,6 +16,7 @@ public class Board {
 
     public void setCell(int row, int col, CellState state){
         board[row][col] = state;
+        notifyObservers();
     }
 
     public boolean isEmpty(int row, int col){
@@ -59,5 +64,21 @@ public class Board {
             }
         }
         return true;
+    }
+
+    public void addObserver(BoardObserver observer){
+        if(observer != null && !observers.contains(observer)){
+            observers.add(observer);
+        }
+    }
+
+    public void removeObserver(BoardObserver observer){
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(){
+        for(BoardObserver observer : observers){
+            observer.onBoardChanged();
+        }
     }
 }

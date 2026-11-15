@@ -1,4 +1,4 @@
-public class Game {
+public class Game implements BoardObserver {
     private final Board board;
     private final Player player1;
     private final Player player2;
@@ -12,6 +12,7 @@ public class Game {
 
         currentPlayer = player1;
         status = GameStatus.IN_PROGRESS;
+        board.addObserver(this);
     }
 
     public Board getBoard(){
@@ -52,9 +53,14 @@ public class Game {
         }
 
         board.setCell(row, col, currentPlayer.getMark());
-        updateGameStatus();
+        // updateGameStatus();
         if(status == GameStatus.IN_PROGRESS){
             switchTurns();
         }
+    }
+
+    @Override 
+    public void onBoardChanged(){
+        updateGameStatus();
     }
 }
