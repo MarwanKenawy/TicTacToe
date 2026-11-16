@@ -91,10 +91,17 @@ public class Game implements BoardObserver {
         }
     }
 
+    public void start(){
+        if(computerStrategy != null && currentPlayer.getMark() == computerMark){
+            makeComputerMove();
+        }
+    }
+
     public void restart(){
         currentPlayer = player1;
         status = GameStatus.IN_PROGRESS;
         board.reset();
+        start();
     }
 
     @Override 

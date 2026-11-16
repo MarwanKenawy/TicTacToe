@@ -5,6 +5,10 @@ public class GameController {
         this.game = game;
     }
 
+    public void startGame(){
+        game.start();
+    }
+
     public void handleCellClick(int row, int col){
         game.playTurn(row, col);
     }

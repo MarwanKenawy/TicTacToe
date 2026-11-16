@@ -25,6 +25,8 @@ public class GameView extends JFrame {
         
         initializeBoard();
         initializeControls();
+        controller.startGame();
+        refreshBoard();
         refreshStatus();
 
     }
