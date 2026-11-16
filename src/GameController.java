@@ -20,4 +20,8 @@ public class GameController {
     public void restartGame(){
         game.restart();
     }
+
+    public CellState getCurrentPlayerMark(){
+        return game.getCurrentPlayer().getMark();
+    }
 }
