@@ -109,7 +109,7 @@ public class Main {
         // board.simulateMove(0, 0, CellState.O);
         // board.simulateMove(0, 1, CellState.O);
 
-        SmartStrategy strategy = new SmartStrategy();
+        // SmartStrategy strategy = new SmartStrategy();
         // Position p = strategy.move(board, CellState.O);
 
         // System.out.println(p.getRow() + ", " + p.getCol());
@@ -142,18 +142,30 @@ public class Main {
         //     (p.getCol() == 0 || p.getCol() == 2)
         // );
 
-        Board board = new Board();
+        // Board board = new Board();
 
-        board.simulateMove(1, 1, CellState.X);
-        board.simulateMove(0, 0, CellState.X);
-        board.simulateMove(0, 2, CellState.O);
-        board.simulateMove(2, 0, CellState.O);
-        board.simulateMove(2, 2, CellState.X);
+        // board.simulateMove(1, 1, CellState.X);
+        // board.simulateMove(0, 0, CellState.X);
+        // board.simulateMove(0, 2, CellState.O);
+        // board.simulateMove(2, 0, CellState.O);
+        // board.simulateMove(2, 2, CellState.X);
 
-        Position p = strategy.move(board, CellState.O);
+        // Position p = strategy.move(board, CellState.O);
 
-        System.out.println(board.isEmpty(p.getRow(), p.getCol()));
-        
+        // System.out.println(board.isEmpty(p.getRow(), p.getCol()));
+
+        Game game = new Game("Alice", "Bob", new SmartStrategy(), CellState.O);
+        game.playTurn(0, 0);
+        // game.makeComputerMove();
+        // game.makeMove(0, 1);
+        // game.makeComputerMove();
+        // game.makeMove(2, 2);
+        // game.makeComputerMove();
+
+        // System.out.println(game.getBoard().isEmpty(0, 2));
+        System.out.println(game.getBoard().getCell(0, 0));
+        System.out.println(game.getBoard().getCell(1, 1));
+        // System.out.println(game.getStatus());        
     }
 
     private static void place(Board board, int row, int col, CellState mark) {
