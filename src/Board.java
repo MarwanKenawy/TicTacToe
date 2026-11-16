@@ -29,6 +29,7 @@ public class Board {
 
     public void reset(){
         initializeBoard();
+        notifyObservers();
     }
 
     private void initializeBoard(){

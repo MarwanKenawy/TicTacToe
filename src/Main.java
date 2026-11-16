@@ -153,19 +153,25 @@ public class Main {
         // Position p = strategy.move(board, CellState.O);
 
         // System.out.println(board.isEmpty(p.getRow(), p.getCol()));
-
+        
         Game game = new Game("Alice", "Bob", new SmartStrategy(), CellState.O);
+        System.out.println(game.getCurrentPlayer());
         game.playTurn(0, 0);
         // game.makeComputerMove();
-        // game.makeMove(0, 1);
+        game.playTurn(0, 1);
         // game.makeComputerMove();
-        // game.makeMove(2, 2);
+        game.playTurn(2, 2);
         // game.makeComputerMove();
 
         // System.out.println(game.getBoard().isEmpty(0, 2));
         System.out.println(game.getBoard().getCell(0, 0));
         System.out.println(game.getBoard().getCell(1, 1));
-        // System.out.println(game.getStatus());        
+        System.out.println(game.getStatus());
+        game.restart();        
+        System.out.println(game.getStatus());
+        System.out.println(game.getBoard().getCell(0, 0));
+        System.out.println(game.getBoard().getCell(1, 1));
+        System.out.println(game.getCurrentPlayer());
     }
 
     private static void place(Board board, int row, int col, CellState mark) {

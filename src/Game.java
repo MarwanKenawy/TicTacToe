@@ -91,6 +91,12 @@ public class Game implements BoardObserver {
         }
     }
 
+    public void restart(){
+        currentPlayer = player1;
+        status = GameStatus.IN_PROGRESS;
+        board.reset();
+    }
+
     @Override 
     public void onBoardChanged(){
         updateGameStatus();
