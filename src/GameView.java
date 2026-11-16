@@ -49,14 +49,15 @@ public class GameView extends JFrame {
                 button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 
-
                 final int r = row;
                 final int c = col;
 
                 button.addActionListener(e -> {
-                    controller.handleCellClick(r, c);
-                    refreshBoard();
-                    refreshStatus();
+                    if(!controller.isGameOver() && controller.getCellState(r, c) == CellState.EMPTY){
+                        controller.handleCellClick(r, c);
+                        refreshBoard();
+                        refreshStatus();
+                    }
                 });
 
                 buttons[row][col] = button;

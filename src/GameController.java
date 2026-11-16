@@ -28,4 +28,8 @@ public class GameController {
     public CellState getCurrentPlayerMark(){
         return game.getCurrentPlayer().getMark();
     }
+
+    public boolean isGameOver(){
+        return game.getStatus() != GameStatus.IN_PROGRESS;
+    }
 }
