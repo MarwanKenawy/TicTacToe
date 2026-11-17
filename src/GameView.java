@@ -25,6 +25,7 @@ public class GameView extends JFrame {
         
         initializeBoard();
         initializeControls();
+        initializeHistoryControls();
         controller.startGame();
         refreshBoard();
         refreshStatus();
@@ -128,5 +129,28 @@ public class GameView extends JFrame {
         controlPanel.add(restartButton);
 
         add(controlPanel, BorderLayout.SOUTH);
+    }
+
+    private void initializeHistoryControls(){
+        JButton undoButton = new JButton("Undo");
+        JButton redoButton = new JButton("Redo");
+
+        undoButton.addActionListener(e -> {
+            controller.undoMove();
+            refreshBoard();
+            refreshStatus();
+        });
+
+        redoButton.addActionListener(e -> {
+            controller.redoMove();
+            refreshBoard();
+            refreshStatus();
+        });
+
+        JPanel historyPanel = new JPanel();
+        historyPanel.add(undoButton);
+        historyPanel.add(redoButton);
+
+        add(historyPanel, BorderLayout.WEST);
     }
 }

@@ -29,6 +29,14 @@ public class GameController {
         return game.getCurrentPlayer().getMark();
     }
 
+    public void undoMove(){
+        game.undo();
+    }
+
+    public void redoMove(){
+        game.redo();
+    }
+
     public boolean isGameOver(){
         return game.getStatus() != GameStatus.IN_PROGRESS;
     }

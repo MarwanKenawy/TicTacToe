@@ -1,3 +1,6 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class Game implements BoardObserver {
     private final Board board;
     private final Player player1;
@@ -6,6 +9,8 @@ public class Game implements BoardObserver {
     private GameStatus status;
     private MoveStrategy computerStrategy;
     private CellState computerMark;
+    private final Deque<Move> undoStack = new ArrayDeque<>();
+    private final Deque<Move> redoStack = new ArrayDeque<>();
 
     public Game(String player1Name, String player2Name){
         board = new Board();
@@ -65,6 +70,8 @@ public class Game implements BoardObserver {
         }
 
         board.setCell(row, col, currentPlayer.getMark());
+        undoStack.push(new Move(row, col, currentPlayer.getMark()));
+        redoStack.clear();
         // updateGameStatus();
         if(status == GameStatus.IN_PROGRESS){
             switchTurns();
@@ -100,8 +107,41 @@ public class Game implements BoardObserver {
     public void restart(){
         currentPlayer = player1;
         status = GameStatus.IN_PROGRESS;
+        undoStack.clear();
+        redoStack.clear();
         board.reset();
         start();
+    }
+
+    public void undo(){
+        if(undoStack.isEmpty()){
+            return;
+        }
+        Move move = undoStack.pop();
+
+        board.simulateMove(move.getRow(), move.getCol(), CellState.EMPTY);
+        redoStack.push(move);
+
+        currentPlayer = move.getMark() == player1.getMark() ? player1 : player2;
+        status = GameStatus.IN_PROGRESS;
+        board.notifyObservers();
+    }
+
+    public void redo(){
+        if(redoStack.isEmpty()){
+            return;
+        }
+
+        Move move = redoStack.pop();
+
+        board.simulateMove(move.getRow(), move.getCol(), move.getMark());
+
+        undoStack.push(move);
+
+        currentPlayer = move.getMark() == player1.getMark() ? player2 : player1;
+
+        updateGameStatus();
+        board.notifyObservers();
     }
 
     @Override 
