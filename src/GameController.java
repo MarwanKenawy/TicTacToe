@@ -13,6 +13,10 @@ public class GameController {
         game.playTurn(row, col);
     }
 
+    public void makeComputerMove(){
+        game.makeComputerMove();
+    }
+
     public GameStatus getGameStatus(){
         return game.getStatus();
     }

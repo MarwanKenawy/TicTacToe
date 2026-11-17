@@ -58,6 +58,16 @@ public class GameView extends JFrame {
                         controller.handleCellClick(r, c);
                         refreshBoard();
                         refreshStatus();
+
+                        if(!controller.isGameOver()){
+                            Timer timer = new Timer(700, event -> {
+                                controller.makeComputerMove();
+                                refreshBoard();
+                                refreshStatus();
+                            });
+                            timer.setRepeats(false);
+                            timer.start();
+                        }
                     }
                 });
 

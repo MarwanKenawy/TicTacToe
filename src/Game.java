@@ -93,9 +93,9 @@ public class Game implements BoardObserver {
     public void playTurn(int row, int col){
         makeMove(row, col);
 
-        if(computerStrategy != null && status == GameStatus.IN_PROGRESS && currentPlayer.getMark() == computerMark){
-            makeComputerMove();
-        }
+        // if(computerStrategy != null && status == GameStatus.IN_PROGRESS && currentPlayer.getMark() == computerMark){
+        //     makeComputerMove();
+        // }
     }
 
     public void start(){
