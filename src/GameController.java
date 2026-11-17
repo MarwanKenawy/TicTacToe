@@ -30,11 +30,11 @@ public class GameController {
     }
 
     public void undoMove(){
-        game.undo();
+        game.undoTurn();
     }
 
     public void redoMove(){
-        game.redo();
+        game.redoTurn();
     }
 
     public boolean isGameOver(){

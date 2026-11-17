@@ -127,6 +127,37 @@ public class Game implements BoardObserver {
         board.notifyObservers();
     }
 
+    public void undoTurn(){
+        if(computerStrategy == null){
+            undo();
+            return;
+        }
+
+        if(undoStack.isEmpty()){
+            return;
+        }
+
+        Move lastMove = undoStack.peek();
+
+        undo();
+
+        if(!undoStack.isEmpty()){
+            if(lastMove.getMark() == computerMark){
+                if (undoStack.peek().getMark() != computerMark) {
+                    undo();
+                }else{
+                    if(undoStack.peek().getMark() == computerMark){
+                        undo();
+                    }
+                }
+            }
+        }
+
+        if(computerStrategy != null && status == GameStatus.IN_PROGRESS && currentPlayer.getMark() == computerMark){
+            makeComputerMove();
+        }
+    }
+
     public void redo(){
         if(redoStack.isEmpty()){
             return;
@@ -142,6 +173,22 @@ public class Game implements BoardObserver {
 
         updateGameStatus();
         board.notifyObservers();
+    }
+
+    public void redoTurn(){
+        if(redoStack.isEmpty()){
+            return;
+        }
+
+        redo();
+
+        if(computerStrategy != null && status == GameStatus.IN_PROGRESS && currentPlayer.getMark() == computerMark){
+            if(!redoStack.isEmpty() && redoStack.peek().getMark() == computerMark){
+                redo();
+            }else{
+                makeComputerMove();
+            }
+        }
     }
 
     @Override 
