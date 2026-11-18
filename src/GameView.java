@@ -40,14 +40,30 @@ public class GameView extends JFrame {
         for(int row = 0; row < 3; row++){
             for(int col = 0; col < 3; col++){
                 JButton button = new JButton("");
-                button.setFont(new Font("Serif", Font.BOLD, 60));
+                button.setFont(new Font("Arial", Font.BOLD, 65));
 
                 button.setBackground(Color.WHITE);
                 button.setForeground(Color.BLACK);
                 button.setFocusPainted(false);
-                button.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+                button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(220, 225, 230), 2), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
                 button.setOpaque(true);
                 button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                button.addMouseListener(new java.awt.event.MouseAdapter(){
+                    @Override 
+                    public void mouseEntered(java.awt.event.MouseEvent e){
+                        if(button.getText().isEmpty()){
+                            button.setBackground(new Color(235, 245, 255));
+                        }
+                    }
+
+                    @Override 
+                    public void mouseExited(java.awt.event.MouseEvent e){
+                        if(button.getText().isEmpty()){
+                            button.setBackground(Color.WHITE);
+                        }
+                    }
+                });
 
 
                 final int r = row;
@@ -89,11 +105,13 @@ public class GameView extends JFrame {
                     buttons[row][col].setForeground(Color.BLACK);
                 }else if(state == CellState.X){
                     buttons[row][col].setText("X");
-                    buttons[row][col].setForeground(new Color(41, 128, 185));
+                    buttons[row][col].setForeground(new Color(52, 152, 219));
+                    buttons[row][col].setBackground(Color.WHITE);
                 }
                 else{
                     buttons[row][col].setText("O");
                     buttons[row][col].setForeground(new Color(231, 76, 60));;
+                    buttons[row][col].setBackground(Color.WHITE);
                 }
             }
         }
