@@ -12,7 +12,7 @@ public class GameView extends JFrame {
         buttons = new JButton[3][3];
 
         setTitle("Tic Tac Toe");
-        setSize(500, 550);
+        setSize(650, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setBackground(new Color(245, 247, 250));
@@ -59,7 +59,7 @@ public class GameView extends JFrame {
                         refreshBoard();
                         refreshStatus();
 
-                        if(!controller.isGameOver()){
+                        if(!controller.isGameOver() && controller.isComputerTurn()){
                             Timer timer = new Timer(700, event -> {
                                 controller.makeComputerMove();
                                 refreshBoard();
@@ -144,23 +144,68 @@ public class GameView extends JFrame {
     private void initializeHistoryControls(){
         JButton undoButton = new JButton("Undo");
         JButton redoButton = new JButton("Redo");
-
+        JButton saveSnapshotButton = new JButton("Save Snapshot");
+        JButton restoreSnapshotButton = new JButton("Restore Snapshot");
+        
         undoButton.addActionListener(e -> {
             controller.undoMove();
             refreshBoard();
             refreshStatus();
         });
-
+        
         redoButton.addActionListener(e -> {
             controller.redoMove();
             refreshBoard();
             refreshStatus();
         });
-
+        
+        saveSnapshotButton.addActionListener(e -> {
+            controller.saveSnapshot();
+            refreshStatus();
+        });
+        
+        restoreSnapshotButton.addActionListener(e -> {
+            controller.restoreSnapshot();
+            refreshBoard();
+            refreshStatus();
+            
+            if(controller.isComputerTurn()){
+                Timer timer = new Timer(700, event -> {
+                    controller.makeComputerMove();
+                    refreshBoard();
+                    refreshStatus();
+                });
+                
+                timer.setRepeats(false);
+                timer.start();
+            }
+        });
+        
         JPanel historyPanel = new JPanel();
-        historyPanel.add(undoButton);
-        historyPanel.add(redoButton);
+        historyPanel.setLayout(new BoxLayout(historyPanel, BoxLayout.Y_AXIS));
+        historyPanel.setBackground(new Color(245, 247, 250));
+        historyPanel.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 15));
+        historyPanel.setPreferredSize(new Dimension(165, 0));
+        
+        JLabel controlsLabel = new JLabel("Game Controls");
+        controlsLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        controlsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        historyPanel.add(controlsLabel);
+        historyPanel.add(Box.createVerticalStrut(20));
+        
+        JButton [] controlButtons = {undoButton, redoButton, saveSnapshotButton, restoreSnapshotButton};
 
-        add(historyPanel, BorderLayout.WEST);
+        for(JButton button : controlButtons){
+            button.setFont(new Font("Arial", Font.BOLD, 13));
+            button.setFocusPainted(false);
+            button.setAlignmentX(Component.CENTER_ALIGNMENT);
+            button.setMaximumSize(new Dimension(145, 40));
+            button.setPreferredSize(new Dimension(145, 40));
+
+            historyPanel.add(button);
+            historyPanel.add(Box.createVerticalStrut(12));
+        }
+        add(historyPanel, BorderLayout.EAST);
     }
 }

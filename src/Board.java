@@ -71,6 +71,22 @@ public class Board {
         return true;
     }
 
+    public BoardSnapshot createSnapshot(){
+        return new BoardSnapshot(board);
+    }
+
+    public void restoreSnapshot(BoardSnapshot snapshot){
+        CellState[][] savedBoard = snapshot.getSavedBoard();
+
+        for(int row = 0; row < 3; row++){
+            for(int col = 0; col < 3; col++){
+                board[row][col] = savedBoard[row][col];
+            }
+        }
+
+        notifyObservers();
+    }
+
     public void addObserver(BoardObserver observer){
         if(observer != null && !observers.contains(observer)){
             observers.add(observer);

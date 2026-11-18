@@ -44,4 +44,16 @@ public class GameController {
     public boolean isGameOver(){
         return game.getStatus() != GameStatus.IN_PROGRESS;
     }
+
+    public void saveSnapshot(){
+        game.saveSnapshot();
+    }
+
+    public boolean isComputerTurn(){
+        return game.isComputerTurn();
+    }
+
+    public void restoreSnapshot(){
+        game.restoreSnapshot();
+    }
 }

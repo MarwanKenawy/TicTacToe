@@ -11,6 +11,9 @@ public class Game implements BoardObserver {
     private CellState computerMark;
     private final Deque<Move> undoStack = new ArrayDeque<>();
     private final Deque<Move> redoStack = new ArrayDeque<>();
+    private BoardSnapshot savedSnapshot;
+    private Player savedCurrentPlayer;
+    private GameStatus savedStatus;
 
     public Game(String player1Name, String player2Name){
         board = new Board();
@@ -42,6 +45,10 @@ public class Game implements BoardObserver {
 
     public GameStatus getStatus(){
         return status;
+    }
+
+    public boolean isComputerTurn(){
+        return computerStrategy != null && status == GameStatus.IN_PROGRESS && currentPlayer.getMark() == computerMark;
     }
 
     public void updateGameStatus(){
@@ -189,6 +196,38 @@ public class Game implements BoardObserver {
                 makeComputerMove();
             }
         }
+    }
+
+    public void saveSnapshot(){
+        savedSnapshot = board.createSnapshot();
+        savedCurrentPlayer = currentPlayer;
+        savedStatus = status;
+    }
+
+    public void restoreSnapshot(){
+        if(savedSnapshot == null){
+            return;
+        }
+
+        currentPlayer = savedCurrentPlayer;
+        status = GameStatus.IN_PROGRESS;
+
+        board.restoreSnapshot(savedSnapshot);
+
+        undoStack.clear();
+        redoStack.clear();
+
+        // int occupiedCells = 0;
+
+        // for(int row = 0; row < 3; row++){
+        //     for(int col = 0; col < 3; col++){
+        //         if(!board.isEmpty(row, col)){
+        //             occupiedCells++;
+        //         }
+        //     }
+        // }
+
+        // currentPlayer = occupiedCells % 2 == 0 ? player1 : player2;
     }
 
     @Override 
