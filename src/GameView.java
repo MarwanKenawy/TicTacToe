@@ -127,7 +127,10 @@ public class GameView extends JFrame {
 
                 if(isWinningCell){
                     buttons[row][col].setBackground(new Color(200, 245, 210));
-                }else{
+                }else if(controller.getGameStatus() == GameStatus.DRAW){
+                    buttons[row][col].setBackground(new Color(255, 239, 204));
+                }
+                else{
                     buttons[row][col].setBackground(Color.WHITE);
                 }
             }
