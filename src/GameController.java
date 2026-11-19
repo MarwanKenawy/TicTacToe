@@ -33,6 +33,14 @@ public class GameController {
         return game.getCurrentPlayer().getMark();
     }
 
+    public String getCurrentPlayerName(){
+        return game.getCurrentPlayerName();
+    }
+
+    public boolean isSinglePlayer(){
+        return game.isSinglePlayer();
+    }
+
     public void undoMove(){
         game.undoTurn();
     }

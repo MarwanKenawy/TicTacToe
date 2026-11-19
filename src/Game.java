@@ -43,6 +43,14 @@ public class Game implements BoardObserver {
         return currentPlayer;
     }
 
+    public String getCurrentPlayerName(){
+        return currentPlayer.getName();
+    }
+
+    public boolean isSinglePlayer(){
+        return computerStrategy != null;
+    }
+
     public GameStatus getStatus(){
         return status;
     }

@@ -140,13 +140,19 @@ public class GameView extends JFrame {
     private void refreshStatus(){
         GameStatus status = controller.getGameStatus();
 
+        boolean singlePlayer = controller.isSinglePlayer();
+
         switch (status) {
             case X_WON:
-                statusLabel.setText("X Wins!");
-                statusLabel.setForeground(new Color(39, 174, 96));
-                break;
             case O_WON:
-                statusLabel.setText("O Wins!");
+                String winner = status == GameStatus.X_WON ? "X" : "O";
+
+                if(singlePlayer){
+                    String winnerName = controller.getCurrentPlayerName();
+                    statusLabel.setText(winnerName + " Wins!");
+                }else{
+                    statusLabel.setText("Player " + winner + " Wins!");
+                }
                 statusLabel.setForeground(new Color(39, 174, 96));
                 break;
             case DRAW:
@@ -154,12 +160,14 @@ public class GameView extends JFrame {
                 statusLabel.setForeground(new Color(243, 156, 18));
                 break;
             case IN_PROGRESS:
-                statusLabel.setText("Player " + controller.getCurrentPlayerMark() + "'s Turn");
-                if(controller.getCurrentPlayerMark() == CellState.X){
-                    statusLabel.setForeground(new Color(52, 152, 219));
+                if(singlePlayer){
+                    statusLabel.setText(controller.getCurrentPlayerName().equals("Computer") ? "Computer's Turn" : "Your Turn (" + controller.getCurrentPlayerMark() + ")");
                 }else{
-                    statusLabel.setForeground(new Color(231, 76, 60));
+                    statusLabel.setText("Player " + controller.getCurrentPlayerMark() + "'s Turn");
+
                 }
+
+                statusLabel.setForeground(controller.getCurrentPlayerMark() == CellState.X ? new Color(52, 152, 219) : new Color(231, 76, 60));
                 break;
         }
     }
