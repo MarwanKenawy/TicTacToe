@@ -6,6 +6,7 @@ public class GameView extends JFrame {
     private final GameController controller;
     private final JButton[][] buttons;
     private JLabel statusLabel;
+    private boolean gameOverDialogShown = false;
 
     public GameView(GameController controller){
         this.controller = controller;
@@ -170,6 +171,10 @@ public class GameView extends JFrame {
                 statusLabel.setForeground(controller.getCurrentPlayerMark() == CellState.X ? new Color(52, 152, 219) : new Color(231, 76, 60));
                 break;
         }
+
+        if(status != GameStatus.IN_PROGRESS){
+            SwingUtilities.invokeLater(this::showGameOverDialog);
+        }
     }
 
     private void initializeControls(){
@@ -198,6 +203,7 @@ public class GameView extends JFrame {
 
         restartButton.addActionListener(e -> {
             controller.restartGame();
+            gameOverDialogShown = false;
             refreshBoard();
             refreshStatus();
         });
@@ -292,5 +298,34 @@ public class GameView extends JFrame {
             historyPanel.add(Box.createVerticalStrut(12));
         }
         add(historyPanel, BorderLayout.EAST);
+    }
+
+    private void showGameOverDialog(){
+        if(gameOverDialogShown){
+            return;
+        }
+
+        gameOverDialogShown = true;
+
+        String message;
+
+        if(controller.getGameStatus() == GameStatus.DRAW){
+            message = "It's a Draw!";
+        }else{
+            message = statusLabel.getText();
+        }
+
+        Object[] options = {"Play Again", "Exit"};
+        int choice = JOptionPane.showOptionDialog(this, message, "Game Over", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+        if(choice == 0){
+            controller.restartGame();
+            gameOverDialogShown = false;
+            refreshBoard();
+            refreshStatus();
+        }else if(choice == 1){
+            dispose();
+            System.exit(0);
+        }
     }
 }
