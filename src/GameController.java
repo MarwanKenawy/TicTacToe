@@ -56,4 +56,16 @@ public class GameController {
     public void restoreSnapshot(){
         game.restoreSnapshot();
     }
+
+    public Position[] getWinningLine(){
+        GameStatus status = game.getStatus();
+
+        if(status == GameStatus.X_WON){
+            return game.getBoard().getWinningLine(CellState.X);
+        }else if(status == GameStatus.O_WON){
+            return game.getBoard().getWinningLine(CellState.O);
+        }
+
+        return null;
+    }
 }

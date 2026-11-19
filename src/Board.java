@@ -87,6 +87,30 @@ public class Board {
         notifyObservers();
     }
 
+    public Position[] getWinningLine(CellState mark){
+        for(int row = 0; row < 3; row++){
+            if(board[row][0] == mark && board[row][1] == mark && board[row][2] == mark){
+                return new Position[] {new Position(row, 0), new Position(row, 1), new Position(row, 2)};
+            }
+        }
+
+        for(int col = 0; col < 3; col++){
+            if(board[0][col] == mark && board[1][col] == mark && board[2][col] == mark){
+                return new Position[] {new Position(0, col), new Position(1, col), new Position(2, col)};
+            }
+        }
+
+        if(board[0][0] == mark && board[1][1] == mark && board[2][2] == mark){
+            return new Position[] {new Position(0, 0), new Position(1, 1), new Position(2, 2)};
+        }
+
+        if(board[0][2] == mark && board[1][1] == mark && board[2][0] == mark){
+            return new Position[] {new Position(0, 2), new Position(1, 1), new Position(2, 0)};
+        }
+
+        return null;
+    }
+
     public void addObserver(BoardObserver observer){
         if(observer != null && !observers.contains(observer)){
             observers.add(observer);

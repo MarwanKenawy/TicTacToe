@@ -96,6 +96,8 @@ public class GameView extends JFrame {
     }
 
     private void refreshBoard(){
+        Position[] winningLine = controller.getWinningLine();
+
         for(int row = 0; row < 3; row++){
             for(int col = 0; col < 3; col++){
                 CellState state = controller.getCellState(row, col);
@@ -106,11 +108,26 @@ public class GameView extends JFrame {
                 }else if(state == CellState.X){
                     buttons[row][col].setText("X");
                     buttons[row][col].setForeground(new Color(52, 152, 219));
-                    buttons[row][col].setBackground(Color.WHITE);
                 }
                 else{
                     buttons[row][col].setText("O");
                     buttons[row][col].setForeground(new Color(231, 76, 60));;
+                }
+
+                boolean isWinningCell = false;
+
+                if(winningLine != null){
+                    for(Position position : winningLine){
+                        if(position.getRow() == row && position.getCol() == col){
+                            isWinningCell = true;
+                            break;
+                        }
+                    }
+                }
+
+                if(isWinningCell){
+                    buttons[row][col].setBackground(new Color(200, 245, 210));
+                }else{
                     buttons[row][col].setBackground(Color.WHITE);
                 }
             }
@@ -122,29 +139,50 @@ public class GameView extends JFrame {
 
         switch (status) {
             case X_WON:
-                statusLabel.setText("Player X Wins!");
+                statusLabel.setText("X Wins!");
+                statusLabel.setForeground(new Color(39, 174, 96));
                 break;
             case O_WON:
-                statusLabel.setText("Player O Wins!");
+                statusLabel.setText("O Wins!");
+                statusLabel.setForeground(new Color(39, 174, 96));
                 break;
             case DRAW:
                 statusLabel.setText("It's a Draw!");
+                statusLabel.setForeground(new Color(243, 156, 18));
                 break;
             case IN_PROGRESS:
-                statusLabel.setText("Player " + controller.getCurrentPlayerMark() + "'s turn");
+                statusLabel.setText("Player " + controller.getCurrentPlayerMark() + "'s Turn");
+                if(controller.getCurrentPlayerMark() == CellState.X){
+                    statusLabel.setForeground(new Color(52, 152, 219));
+                }else{
+                    statusLabel.setForeground(new Color(231, 76, 60));
+                }
                 break;
         }
     }
 
     private void initializeControls(){
         JButton restartButton = new JButton("Restart Game");
-        restartButton.setFont(new Font("Arial", Font.BOLD, 18));
+        restartButton.setFont(new Font("Arial", Font.BOLD, 15));
         restartButton.setBackground(new Color(52, 152, 219));
         restartButton.setForeground(Color.WHITE);
         restartButton.setFocusPainted(false);
         restartButton.setBorderPainted(false);
         restartButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        restartButton.setPreferredSize(new Dimension(160, 40));
+        restartButton.setPreferredSize(new Dimension(180, 42));
+        restartButton.setOpaque(true);
+
+        restartButton.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override 
+            public void mouseEntered(java.awt.event.MouseEvent e){
+                restartButton.setBackground(new Color(41, 128, 185));
+            }
+
+            @Override 
+            public void mouseExited(java.awt.event.MouseEvent e){
+                restartButton.setBackground(new Color(52, 152, 219));
+            }
+        });
 
 
         restartButton.addActionListener(e -> {
@@ -215,11 +253,29 @@ public class GameView extends JFrame {
         JButton [] controlButtons = {undoButton, redoButton, saveSnapshotButton, restoreSnapshotButton};
 
         for(JButton button : controlButtons){
-            button.setFont(new Font("Arial", Font.BOLD, 13));
+            button.setFont(new Font("Arial", Font.BOLD, 12));
+            button.setForeground(new Color(44, 62, 80));
+            button.setBackground(Color.WHITE);
             button.setFocusPainted(false);
+            button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(210, 218, 225), 1), BorderFactory.createEmptyBorder(8, 5, 8, 5)));
+
             button.setAlignmentX(Component.CENTER_ALIGNMENT);
-            button.setMaximumSize(new Dimension(145, 40));
-            button.setPreferredSize(new Dimension(145, 40));
+            button.setMaximumSize(new Dimension(145, 42));
+            button.setPreferredSize(new Dimension(145, 42));
+            button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            button.setOpaque(true);
+
+            button.addMouseListener(new java.awt.event.MouseAdapter(){
+                @Override 
+                public void mouseEntered(java.awt.event.MouseEvent e){
+                    button.setBackground(new Color(225, 240, 250));
+                }
+
+                @Override 
+                public void mouseExited(java.awt.event.MouseEvent e){
+                    button.setBackground(Color.WHITE);
+                }
+            });
 
             historyPanel.add(button);
             historyPanel.add(Box.createVerticalStrut(12));
