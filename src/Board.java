@@ -19,6 +19,9 @@ public class Board {
     }
 
     public void setCell(int row, int col, CellState state){
+        if(state == null){
+            throw new IllegalArgumentException("Cell state cannot be null");
+        }
         board[row][col] = state;
         notifyObservers();
     }
@@ -76,6 +79,9 @@ public class Board {
     }
 
     public void restoreSnapshot(BoardSnapshot snapshot){
+        if(snapshot == null){
+            throw new IllegalArgumentException("Snapshot cannot be null");
+        }
         CellState[][] savedBoard = snapshot.getSavedBoard();
 
         for(int row = 0; row < 3; row++){
@@ -122,7 +128,7 @@ public class Board {
     }
 
     public void notifyObservers(){
-        for(BoardObserver observer : observers){
+        for(BoardObserver observer : new ArrayList<>(observers)){
             observer.onBoardChanged();
         }
     }

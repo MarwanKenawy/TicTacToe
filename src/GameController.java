@@ -2,6 +2,9 @@ public class GameController {
     private final Game game;
 
     public GameController(Game game){
+        if(game == null){
+            throw new IllegalArgumentException("Game cannot be null");
+        }
         this.game = game;
     }
 

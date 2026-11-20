@@ -9,6 +9,9 @@ public class GameView extends JFrame {
     private boolean gameOverDialogShown = false;
 
     public GameView(GameController controller){
+        if(controller == null){
+            throw new IllegalArgumentException("Controller cannot be null");
+        }
         this.controller = controller;
         buttons = new JButton[3][3];
 
@@ -71,7 +74,7 @@ public class GameView extends JFrame {
                 final int c = col;
 
                 button.addActionListener(e -> {
-                    if(!controller.isGameOver() && controller.getCellState(r, c) == CellState.EMPTY){
+                    if(!controller.isGameOver() && !controller.isComputerTurn() && controller.getCellState(r, c) == CellState.EMPTY){
                         controller.handleCellClick(r, c);
                         refreshBoard();
                         refreshStatus();
@@ -112,7 +115,7 @@ public class GameView extends JFrame {
                 }
                 else{
                     buttons[row][col].setText("O");
-                    buttons[row][col].setForeground(new Color(231, 76, 60));;
+                    buttons[row][col].setForeground(new Color(231, 76, 60));
                 }
 
                 boolean isWinningCell = false;
