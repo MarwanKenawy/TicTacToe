@@ -1,6 +1,6 @@
 # Tic Tac Toe
 
-A Java-based Tic Tac Toe game featuring two-player and single-player modes, multiple AI difficulty levels, and a graphical user interface built with Java Swing.
+A Java-based Tic Tac Toe game featuring two-player and single-player modes, multiple difficulty levels, and a graphical user interface built with Java Swing.
 
 ## Features
 
