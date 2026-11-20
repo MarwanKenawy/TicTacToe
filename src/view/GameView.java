@@ -1,3 +1,9 @@
+package view;
+
+import controller.GameController;
+import model.enums.*;
+import model.Position;
+
 import javax.swing.*;
 
 import java.awt.*;

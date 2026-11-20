@@ -1,3 +1,10 @@
+package model;
+
+import model.enums.CellState;
+import model.enums.GameStatus;
+
+import strategy.MoveStrategy;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 

@@ -1,3 +1,14 @@
+package app;
+
+import controller.GameController;
+
+import model.Game;
+import model.enums.*;
+
+import strategy.*;
+
+import view.GameView;
+
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 

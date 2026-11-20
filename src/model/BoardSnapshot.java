@@ -1,3 +1,7 @@
+package model;
+
+import model.enums.CellState;
+
 public class BoardSnapshot {
     private final CellState[][] savedBoard;
 

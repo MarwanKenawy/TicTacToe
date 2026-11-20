@@ -1,3 +1,9 @@
+package strategy;
+
+import model.enums.CellState;
+import model.Position;
+import model.Board;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

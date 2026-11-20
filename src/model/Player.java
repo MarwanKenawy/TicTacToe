@@ -1,3 +1,7 @@
+package model;
+
+import model.enums.CellState;
+
 public class Player {
     private final String name;
     private final CellState mark;

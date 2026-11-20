@@ -1,3 +1,10 @@
+package controller;
+
+import model.enums.GameStatus;
+import model.enums.CellState;
+import model.Game;
+import model.Position;
+
 public class GameController {
     private final Game game;
 

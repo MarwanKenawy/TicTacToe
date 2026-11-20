@@ -1,3 +1,7 @@
+package model;
+
+import model.enums.CellState;
+
 public class Move {
     private final int row;
     private final int col;
