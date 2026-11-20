@@ -13,9 +13,11 @@ public class Game implements BoardObserver {
     private final Deque<Move> redoStack = new ArrayDeque<>();
     private BoardSnapshot savedSnapshot;
     private Player savedCurrentPlayer;
-    private GameStatus savedStatus;
 
     public Game(String player1Name, String player2Name){
+        if(player1Name == null || player1Name.isBlank() || player2Name == null || player2Name.isBlank()){
+            throw new IllegalArgumentException("Player names cannot be empty");
+        }
         board = new Board();
         player1 = new Player(player1Name, CellState.X);
         player2 = new Player(player2Name, CellState.O);
@@ -28,9 +30,11 @@ public class Game implements BoardObserver {
     public Game(String player1Name, String player2Name, MoveStrategy computerStrategy, CellState computerMark){
         this(player1Name, player2Name);
 
-        if(computerStrategy != null && computerMark == CellState.EMPTY)
+        if(computerStrategy != null && (computerMark == null || computerMark == CellState.EMPTY))
             throw new IllegalArgumentException("Invalid computer mark");
 
+        if(computerStrategy == null && computerMark != null)
+            throw new IllegalArgumentException("Computer strategy is required");
         this.computerStrategy = computerStrategy;
         this.computerMark = computerMark;
     }
@@ -66,6 +70,8 @@ public class Game implements BoardObserver {
             status = GameStatus.O_WON;
         else if(board.isFull())
             status = GameStatus.DRAW;
+        else
+            status = GameStatus.IN_PROGRESS;
     }
 
     private void switchTurns(){
@@ -107,10 +113,6 @@ public class Game implements BoardObserver {
 
     public void playTurn(int row, int col){
         makeMove(row, col);
-
-        // if(computerStrategy != null && status == GameStatus.IN_PROGRESS && currentPlayer.getMark() == computerMark){
-        //     makeComputerMove();
-        // }
     }
 
     public void start(){
@@ -156,19 +158,11 @@ public class Game implements BoardObserver {
 
         undo();
 
-        if(!undoStack.isEmpty()){
-            if(lastMove.getMark() == computerMark){
-                if (undoStack.peek().getMark() != computerMark) {
-                    undo();
-                }else{
-                    if(undoStack.peek().getMark() == computerMark){
-                        undo();
-                    }
-                }
-            }
+        if(lastMove.getMark() == computerMark && !undoStack.isEmpty()){
+            undo();
         }
 
-        if(computerStrategy != null && status == GameStatus.IN_PROGRESS && currentPlayer.getMark() == computerMark){
+        if(isComputerTurn()){
             makeComputerMove();
         }
     }
@@ -209,7 +203,6 @@ public class Game implements BoardObserver {
     public void saveSnapshot(){
         savedSnapshot = board.createSnapshot();
         savedCurrentPlayer = currentPlayer;
-        savedStatus = status;
     }
 
     public void restoreSnapshot(){
